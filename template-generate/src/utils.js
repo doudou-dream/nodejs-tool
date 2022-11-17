@@ -2,7 +2,7 @@
 const fs = require('fs')
 const path = require('path')
 
-const pathResolve = (...file) => path.resolve('./', ...file)
+const pathResolve = (...file) => path.resolve(__dirname, ...file)
 const log = message => console.log(`${message}`)
 const successLog = message => console.log(`%c ${message}`, 'color: #16a951')
 const errorLog = error => console.log(`%c ${error}`, 'color: #bf242a')

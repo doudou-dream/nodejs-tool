@@ -15,17 +15,16 @@ async function createTemplate(inputPath, inputApiPrefix) {
     inputPath = String(inputPath).trim().toString().replace('/', '\\')
     const inputName = inputPath.split('\\')[inputPath.split('\\').length - 1]
     // 读取模板目录所有文件
-    const files = await utils.readFiles(utils.pathResolve(config.template_path))
+    const files = await utils.readFiles(utils.pathResolve('../' + config.template_path))
     // 需要写入的文件集合
     let newData = []
     // 替换新名字
     const newFileName = inputName.replace(/^\S/, s => s.toUpperCase())
     for (const file of files) {
         let content = fs.readFileSync(file).toString() // 文件内容
-        let pathFile = file//文件路径
-        console.log(config.template_path)
+        let pathFile = file.split(config.template_path.substring(1))//文件路径
         // 新地址替换
-        pathFile = pathFile.replaceAll(config.template_path.substring(2), inputPath)
+        pathFile = utils.pathResolve('../'+inputPath) + pathFile[1]
         // 文件引用名字替换
         content = content.replaceAll(readName, newFileName)
         pathFile = pathFile.replaceAll(readName, newFileName)
