@@ -1,3 +1,7 @@
+/**
+ * 约定：
+ * 1. 文件目录最后一级是文件的名字
+ */
 const readline = require("readline");
 const fs = require('fs')
 const createTemplate = require("./src/createTemplate");
@@ -28,7 +32,7 @@ async function mainRun() {
 
 /**
  * 文件路径输入判断
- * @returns 
+ * @returns
  */
 async function comDir() {
     return await new Promise((resolve) => {

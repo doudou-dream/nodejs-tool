@@ -71,11 +71,32 @@ function listFile(dir, list = []) {
     return list
 }
 
+/**
+ * 文件路径最后一级
+ * @private
+ */
+function pathLastLevel(path) {
+    const temp = path.replaceAll('\\', '/').split('/')
+    return temp[temp.length - 1]
+}
+
+/**
+ * 删除文件路径最后一级
+ * @private
+ */
+function removePathLastLevel(path) {
+    let temp = path.replaceAll('\\', '/')
+    return temp.split('/').slice(0, -1).join('/')
+}
+
+
 module.exports = {
     readFiles,
     createFile,
     createDir,
     log,
     successLog,
-    pathResolve
+    pathResolve,
+    pathLastLevel,
+    removePathLastLevel
 }
