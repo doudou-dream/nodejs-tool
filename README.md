@@ -7,7 +7,7 @@ pnpm add -D readline
 node  run.js
 ```
 
-## 1. 打包上传服务器(package-upload)
+## 2. 打包上传服务器(package-upload)
 
 ```sh
 cd template-generate
