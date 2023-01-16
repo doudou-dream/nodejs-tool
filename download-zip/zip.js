@@ -1,9 +1,12 @@
 /**
  * 压缩服务
  */
-const compressing = require('compressing')
-const fs = require('fs')// 获取文件系统模块，负责读写文件
-const path = require('path')
+import compressing from 'compressing'
+import fs from 'fs'// 获取文件系统模块，负责读写文件
+import path from 'path'
+// import { fileURLToPath } from 'node:url';
+
+// const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // 工具模块，处理文件路径的小工具
 /**
@@ -57,7 +60,11 @@ async function init(file) {
  * @param inputFile
  * @param outFile
  */
-async function zipFile(inputFile, outFile) {
+export async function zipFile(inputFile, outFile) {
+  if (!fs.existsSync(inputFile)) {
+    console.log('文件或者文件夹不存在')
+    return false;
+  }
   await init(outFile)
   return await new Promise((resolve, reject) => {
     compressing.zip
@@ -79,18 +86,21 @@ async function zipFile(inputFile, outFile) {
 
 
 /**
- * 压缩文件
+ * 解压文件
  * @returns
  * @param inputFile
  * @param outFile
  */
-async function unzipFile(inputFile, outFile) {
+export async function unzipFile(inputFile, outFile) {
+  if (!fs.existsSync(inputFile)) {
+    console.log('文件或者文件夹不存在')
+    return false;
+  }
   await init(outFile)
   return await new Promise((resolve, reject) => {
     compressing.zip
       .uncompress(inputFile, outFile, {
         zipFileNameEncoding: 'utf-8',
-        ignoreBase: true
       })
       .then(() => {
         console.log(`文件压缩完成，路径：${inputFile} \n`)
@@ -102,10 +112,4 @@ async function unzipFile(inputFile, outFile) {
         reject(err)
       })
   })
-}
-
-
-module.exports = {
-  zipFile,
-  unzipFile
 }
