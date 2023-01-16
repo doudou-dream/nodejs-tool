@@ -16,3 +16,10 @@ pnpm add -D chalk scp2 ssh2 compressing ora fs path
 node  run.js
 ```
 
+## 2. 下载文件，解压、压缩文件(download-zip)
+
+```sh
+cd template-generate
+pnpm init
+pnpm add -D http https compressing
+```

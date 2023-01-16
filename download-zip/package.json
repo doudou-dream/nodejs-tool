@@ -1,0 +1,16 @@
+{
+  "name": "upload-download-zip",
+  "version": "1.0.0",
+  "description": "文件下载，压缩，解压工具",
+  "main": "download.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "compressing": "^1.7.0",
+    "http": "^0.0.1-security",
+    "https": "^1.0.0"
+  }
+}
