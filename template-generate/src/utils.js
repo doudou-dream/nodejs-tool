@@ -89,6 +89,16 @@ function removePathLastLevel(path) {
     return temp.split('/').slice(0, -1).join('/')
 }
 
+/**
+ * 管道流创建文件
+ * @param inputFile 需要拷贝文件路径
+ * @param outputFile 输出文件路径
+ */
+function createFileFlow(inputFile, outputFile) {
+    const read = fs.createReadStream(inputFile);
+    const write = fs.createWriteStream(outputFile);
+    read.pipe(write);
+}
 
 module.exports = {
     readFiles,
@@ -98,5 +108,6 @@ module.exports = {
     successLog,
     pathResolve,
     pathLastLevel,
-    removePathLastLevel
+    removePathLastLevel,
+    createFileFlow
 }
