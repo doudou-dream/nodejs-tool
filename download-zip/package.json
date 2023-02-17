@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.2.6",
     "compressing": "^1.7.0",
     "http": "^0.0.1-security",
     "https": "^1.0.0",
