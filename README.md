@@ -16,7 +16,9 @@ pnpm add -D chalk scp2 ssh2 compressing ora fs path
 node  run.js
 ```
 
-## 2. 下载文件，解压、压缩文件(download-zip)
+## 3. 下载文件，解压、压缩文件(download-zip)
+
+## 4. antv x6 基本使用实例(x6)
 
 ```sh
 cd template-generate
@@ -60,5 +62,32 @@ createElement(text) {
     element.value = text;
     document.body.appendChild(element);
     return element;
+}
+```
+
+```javascript
+// 输入文件地址','返回文件格式
+getFormat(value) {
+    const arr = value.match(/^.*\.(.{3,4})$/)
+    if (arr.length < 2) {
+    return ''
+    }
+    const suffix = arr[1].toUpperCase()
+    const img = ['BMP', 'JPG', 'PNG', 'TIF', 'GIF', 'PCX', 'TGA', 'EXIF', 'FPX', 'SVG', 'PSD', 'CDR', 'PCD', 'DXF', 'UFO', 'EPS', 'AI', 'RAW', 'WMF', 'WEBP', 'AVIF', 'APNG']
+    if (img.some(val => val === suffix)) {
+    return 'img'
+    }
+    const mp3 = ['MP3', 'WMA', 'WAV', 'APE', 'FLAC', 'OGG', 'AAC']
+    if (mp3.some(val => val === suffix)) {
+    return 'mp3'
+    }
+    const mp4 = ['AVI', 'WMV', 'MPEG', 'MP4', 'M4V', 'MOV', 'ASF', 'FLV', 'F4V', 'RMVB', 'RM', '3GP', 'VOB']
+    if (mp4.some(val => val === suffix)) {
+    return 'mp4'
+    }
+    if (suffix === 'PDF') {
+    return 'pdf'
+    }
+    return ''
 }
 ```
