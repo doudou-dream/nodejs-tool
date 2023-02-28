@@ -93,3 +93,41 @@ getFormat(value) {
     return ''
 }
 ```
+
+## Prototype 原型对象
+
+> 每一个函数上，都有一个原型对象 Prototype
+
+- 用在构造函数上，我们可以给构造函数的原型 Prototype，添加方法
+- 如果将方法添加到构造构造函数的 Prototype 原型对象上，构造函数构造出来的对象共享原型上的所有方法
+
+### 原型链继承
+
+```javascript
+var arr1 = [10, 23, 244, 34];
+var arr2 = [23, 435, 45, 546, 546];
+
+Array.prototype.sum = function () {
+  var res = 0;
+  for (var i = 0; i < this.length; i++) {
+    res += this[i];
+  }
+  return res;
+};
+
+console.log(arr1.sum());
+console.log(arr2.sum());
+console.log(arr1.sum == arr2.sum); // true
+```
+
+### 原型链继承
+
+```javascript
+// 错误的写法
+Cat.Prototype = Dog.Prototype();
+
+// 正确写法
+for (var funcName in Dog.Prototype) {
+  Cat.Prototype[funcName] = Dog.Prototype[funcName];
+}
+```
