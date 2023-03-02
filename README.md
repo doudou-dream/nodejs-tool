@@ -131,3 +131,55 @@ for (var funcName in Dog.Prototype) {
   Cat.Prototype[funcName] = Dog.Prototype[funcName];
 }
 ```
+
+## vant 加载
+
+```javascript
+//外联样式
+function loadCss(url) {
+  var link = document.createElement("link");
+  link.type = "text/css";
+  link.rel = "stylesheet";
+  link.href = url;
+  document.head.appendChild(link);
+}
+
+//设置src，引入外部远程js，此时
+function loadJS(url, callback) {
+  var script = document.createElement("script");
+  fn = callback || function () {};
+  script.type = "text/javascript";
+  //IE 判断js是否执行完成
+  if (script.readyState) {
+    script.onreadystatechange = function () {
+      if (script.readyState == "loaded" || script.readyState == "complete") {
+        script.onreadystatechange = null;
+        fn();
+      }
+    };
+  } else {
+    //其他浏览器，判断js是否执行完成
+    script.onload = function () {
+      fn();
+    };
+  }
+  script.src = url;
+  document.getElementsByTagName("head")[0].appendChild(script);
+}
+
+loadCss("https://unpkg.com/vant@2.12/lib/index.css");
+
+async function useLoadVant(callback) {
+  await new Promise((resolve) => {
+    loadJS("https://unpkg.com/vue@2.6.14/dist/vue.min.js", function () {
+      resolve(true);
+    });
+  });
+  await new Promise((resolve) => {
+    loadJS("https://unpkg.com/vant@2.12.54/lib/vant.min.js", function () {
+      resolve(true);
+    });
+  });
+  callback && callback();
+}
+```
