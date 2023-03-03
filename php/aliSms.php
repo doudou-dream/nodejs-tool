@@ -41,7 +41,7 @@ class SignatureHelper
      */
     public function sendSms($mobileNum, $captcha, $temp_body)
     {
-        $params = $this->getSmsConfig($mobileNum, $captcha, $temp_body);
+        $params = $this->getSmsConfig($mobileNum, $captcha, $temp_body = []);
         // *** 需用户填写部分结束, 以下代码若无必要无需更改 ***
         if (!empty($params["TemplateParam"]) && is_array($params["TemplateParam"])) {
             $params["TemplateParam"] = json_encode($params["TemplateParam"], JSON_UNESCAPED_UNICODE);
