@@ -183,3 +183,41 @@ async function useLoadVant(callback) {
   callback && callback();
 }
 ```
+
+## javascript unicode 编码
+
+```javascript
+/**
+ * 加密
+ * @param {string} str
+ */
+const enunicode = (str) => {
+  let result = "";
+  for (let i = 0; i < str.length; i++) {
+    // 获取每个字符的Unicode编码，并转换为16进制字符串
+    let unicode = str.charCodeAt(i).toString(16);
+    // 拼接成完整的Unicode编码
+    result += "\\u" + "0000".substring(0, 4 - unicode.length) + unicode;
+  }
+  return result;
+};
+/**
+ * 解密
+ * @param {string} str
+ */
+const deuncode = (str) => {
+  let arrUnicode = str.split("\\u");
+  let result = "";
+  for (let i = 1; i < arrUnicode.length; i++) {
+    // 将16进制Unicode编码转换成10进制数值
+    let charCode = parseInt(arrUnicode[i], 16);
+    // 将Unicode编码解码成字符
+    result += String.fromCharCode(charCode);
+  }
+  return result;
+};
+let result = enunicode("中文汉字");
+console.log(result);
+result = deuncode(result);
+console.log(result);
+```
