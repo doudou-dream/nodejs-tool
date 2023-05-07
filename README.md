@@ -221,3 +221,14 @@ console.log(result);
 result = deuncode(result);
 console.log(result);
 ```
+
+## PHP 手动设置 cookie
+
+```php
+header('Set-Cookie: ' . ($_W['config']['cookie']['pre'] . $key . '=' . rawurlencode($value))
+			. (!empty($expire) ? ('; expires=' . $expire) : '')
+			. (!empty($_W['config']['cookie']['path']) ? ('; Path=' . $_W['config']['cookie']['path']) : '')
+			. (!empty($_W['config']['cookie']['domain']) ? ('; Domain=' . $_W['config']['cookie']['domain']) : '')
+			. '; SameSite=None; Secure'
+			. (!$httponly ? '' : '; HttpOnly'), false);
+```
