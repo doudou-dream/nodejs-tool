@@ -232,3 +232,5 @@ header('Set-Cookie: ' . ($_W['config']['cookie']['pre'] . $key . '=' . rawurlenc
 			. '; SameSite=None; Secure'
 			. (!$httponly ? '' : '; HttpOnly'), false);
 ```
+## js-print
+> js原生局部打印
