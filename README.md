@@ -232,5 +232,49 @@ header('Set-Cookie: ' . ($_W['config']['cookie']['pre'] . $key . '=' . rawurlenc
 			. '; SameSite=None; Secure'
 			. (!$httponly ? '' : '; HttpOnly'), false);
 ```
+
 ## js-print
-> js原生局部打印
+
+> js 原生局部打印
+
+## js 原生事件
+
+### 实例
+
+```javascript
+// 创建一个名为 'myCustomEvent' 的自定义事件，并携带一个传递参数
+const event = new CustomEvent("myCustomEvent", { detail: { foo: "bar" } });
+// 触发事件
+dispatchEvent(event);
+
+// 添加事件监听器
+addEventListener("myCustomEvent", function (event) {
+  console.log("接收到参数：", event.detail);
+});
+// 移出事件
+removeEventListener('myCustomEvent', myEventHandler);
+```
+
+### 方法封装
+
+```javascript
+/**
+ * 触发事件
+ * name string 名字
+ * param object
+ */
+function trigger(name, params = {}) {
+  const event = new CustomEvent(name, params);
+  // 触发事件
+  dispatchEvent(event);
+}
+/**
+ * name string字符串
+ * callback function方法
+ */
+function on(name, callback) {
+  addEventListener(name, function (event) {
+    callback(event);
+  });
+}
+```
