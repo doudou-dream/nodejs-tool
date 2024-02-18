@@ -277,4 +277,55 @@ function on(name, callback) {
     callback(event);
   });
 }
+/**
+ * ajax 请求封装
+ **/
+function ajaxPost(url, data){
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.responseType = 'json';
+
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            resolve(xhr.response);
+        } else {
+            reject(xhr.statusText);
+        }
+    };
+
+    xhr.onerror = function() {
+        reject('Network error');
+    };
+
+    xhr.send(JSON.stringify(data));
+  });
+}
+/**
+ * ajax 文件上传封装
+ **/
+function ajaxFile(url, data){
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url);
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.responseType = 'json';
+
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            resolve(xhr.response);
+        } else {
+            reject(xhr.statusText);
+        }
+    };
+
+    xhr.onerror = function() {
+        reject('Network error');
+    };
+
+    xhr.send(data);
+});
+}
 ```
