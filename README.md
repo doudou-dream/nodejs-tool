@@ -277,6 +277,11 @@ function on(name, callback) {
     callback(event);
   });
 }
+```
+
+## ajax 请求封装
+
+```javascript
 /**
  * ajax 请求封装
  **/
@@ -328,4 +333,30 @@ function ajaxFile(url, data){
     xhr.send(data);
 });
 }
+```
+
+## js 获取视频封面图base64
+
+```javascript
+getVideoBase64(url){
+  return new Promise(function (resolve, reject) {
+    let dataURL = '';
+    let video = document.createElement("video");
+    video.setAttribute('crossOrigin', 'anonymous');//处理跨域
+    video.setAttribute('src', url);
+    video.setAttribute('width', '100%');
+    video.setAttribute('height', '100%');
+    video.setAttribute('preload', 'auto');
+    video.addEventListener('loadeddata', function () {
+      let canvas = document.createElement("canvas"),
+          width = video.videoWidth, //canvas的尺寸和图片一样
+          height = video.videoHeight;
+      canvas.width = width;
+      canvas.height = height;
+      canvas.getContext("2d").drawImage(video, 0, 0, width, height); //绘制canvas
+      dataURL = canvas.toDataURL('image/jpeg'); //转换为base64
+      resolve(dataURL);
+    });
+  })
+},
 ```
