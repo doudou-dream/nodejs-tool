@@ -360,3 +360,99 @@ getVideoBase64(url){
   })
 },
 ```
+
+## js 弹窗提示封装
+
+```javascript
+    function showMessage(message) {
+      // 创建一个新的 div 元素
+      const messageDiv = document.createElement('div');
+      messageDiv.textContent = message;
+      messageDiv.style.position = 'fixed';
+      messageDiv.style.top = '20px';
+      messageDiv.style.left = '50%';
+      messageDiv.style.transform = 'translateX(-50%)';
+      messageDiv.style.backgroundColor = '#4CAF50';
+      messageDiv.style.color = 'white';
+      messageDiv.style.padding = '10px';
+      messageDiv.style.borderRadius = '5px';
+      messageDiv.style.zIndex = '9999';
+      document.body.appendChild(messageDiv);
+      setTimeout(() => {
+        messageDiv.remove();
+      }, 3000);
+    }
+```
+
+## js 加载动画
+
+```javascript
+// 加载动画
+    function showLoading() {
+        // 创建遮罩层
+        const mask = document.createElement('div');
+        mask.id = 'loading-mask';
+        mask.style.position = 'fixed';
+        mask.style.left = 0;
+        mask.style.top = 0;
+        mask.style.width = '100vw';
+        mask.style.height = '100vh';
+        mask.style.background = 'rgba(0,0,0,0.3)';
+        mask.style.display = 'flex';
+        mask.style.alignItems = 'center';
+        mask.style.justifyContent = 'center';
+        mask.style.zIndex = 9999;
+
+
+        // 创建加载动画容器
+        const loader = document.createElement('div');
+        loader.style.background = '#fff';
+        loader.style.padding = '30px 40px';
+        loader.style.borderRadius = '10px';
+        loader.style.display = 'flex';
+        loader.style.flexDirection = 'column';
+        loader.style.alignItems = 'center';
+
+
+        // 创建加载图标（CSS 动画圆圈）
+        const icon = document.createElement('div');
+        icon.style.width = '48px';
+        icon.style.height = '48px';
+        icon.style.border = '6px solid #eee';
+        icon.style.borderTop = '6px solid #4caf50';
+        icon.style.borderRadius = '50%';
+        icon.style.animation = 'spin 1s linear infinite';
+
+
+        // 创建加载文字
+        const text = document.createElement('div');
+        text.innerText = '加载中...';
+        text.style.marginTop = '16px';
+        text.style.color = '#333';
+        text.style.fontSize = '16px';
+
+
+        loader.appendChild(icon);
+        loader.appendChild(text);
+        mask.appendChild(loader);
+        document.body.appendChild(mask);
+
+
+        // 添加动画样式
+        const style = document.createElement('style');
+        style.innerHTML = `
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+  `;
+        document.head.appendChild(style);
+    }
+
+
+    // 移除加载动画
+    function hideLoading() {
+        const mask = document.getElementById('loading-mask');
+        if (mask) mask.remove();
+    }
+```
