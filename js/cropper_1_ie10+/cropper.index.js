@@ -1,6 +1,5 @@
-
 // 将Base64转换为Blob
-function base64_to_file(base64,filename) {
+function base64_to_file(base64, filename) {
     if (!base64) {
         return null;
     }
@@ -56,6 +55,7 @@ function create_button_def(option) {
     defBtn.style.color = option.color || '#fff';
     defBtn.style.border = 'none';
     defBtn.style.padding = '5px 10px';
+    defBtn.style.margin = '0';
     defBtn.style.borderRadius = '3px';
     defBtn.style.cursor = 'pointer';
     defBtn.style.outline = 'none';
@@ -81,12 +81,15 @@ function file_to_base64(file, fn) {
 /**
  * 兼容IE的弹窗实现
  * @param {string} base64 - 文件
- * @param {Cropper} option - Cropper参数
- * @param {function} [callback] - 确认按钮回调
+ * @param {Cropper} c_option - Cropper参数
+ * @param {object:{title:'',confirm_text:'',cancel_text:'',confirm_fn:function,cancel_fn:function}} _option - Cropper参数
  */
-function show_dialog(base64, option, callback) {
+function show_dialog(base64, c_option,_option) {
+    var base64_arr = base64.split(';') || []
+    if (base64_arr.length < 2) {
+        base64 = 'data:image/png;base64,' + base64;
+    }
     // 创建弹窗容器
-    var title = '图片裁剪'
     var overlay = document.createElement('div');
     overlay.style.position = 'fixed';
     overlay.style.top = '0';
@@ -105,23 +108,24 @@ function show_dialog(base64, option, callback) {
     dialog.style.backgroundColor = '#fff';
     dialog.style.padding = '20px';
     dialog.style.borderRadius = '5px';
-    dialog.style.minWidth = '300px';
-    dialog.style.width = '500px';
+    dialog.style.minWidth = '500px';
+    dialog.style.width = '1000px';
 
     // 标题
     var title_el = document.createElement('h3');
-    title_el.innerHTML = title || '提示';
+    title_el.innerHTML = _option.title || '图片裁剪';
     title_el.style.marginTop = '0';
 
     // 截图 img
     var img_el = document.createElement('img');
     img_el.id = 'crop_img';
     img_el.src = base64
-    img_el.style.width = '50%';
-    img_el.style.height = '286px';
+    img_el.style.width = '100%';
+    img_el.style.height = '100%';
+    // img_el.style.height = '286px';
 
     var img_crop_img_group = document.createElement('div')
-    img_crop_img_group.style.width = '50%'
+    img_crop_img_group.style.width = '70%'
     img_crop_img_group.appendChild(img_el)
 
     // 预览 div
@@ -130,14 +134,14 @@ function show_dialog(base64, option, callback) {
     img_el_copy.className = 'preview_img';
     img_el_copy.style.objectFit = 'contain';
     img_el_copy.style.width = '100%';
-    img_el_copy.style.height = '300px';
+    img_el_copy.style.height = '100%';
     img_el_copy.style.overflow = 'hidden'
     img_el_copy.style.border = '1px solid #000000'
 
     var img_el_copy_group = document.createElement('div')
     img_el_copy.style.marginLeft = '10px'
-    img_el_copy_group.style.width = '48%'
-    img_el_copy.style.height = '300px';
+    img_el_copy_group.style.width = '30%'
+    img_el_copy.style.height = '500px';
     img_el_copy_group.style.display = 'flex'
     img_el_copy_group.style.justifyContent = 'center'
     img_el_copy_group.style.alignItems = 'center'
@@ -146,6 +150,7 @@ function show_dialog(base64, option, callback) {
     var div_group = document.createElement('div')
     div_group.style.display = 'flex'
     div_group.style.overflow = 'hidden'
+    div_group.style.marginTop = '10px'
     div_group.appendChild(img_crop_img_group)
     div_group.appendChild(img_el_copy_group)
 
@@ -155,8 +160,27 @@ function show_dialog(base64, option, callback) {
 
     var option_group_btn = document.createElement('div')
     option_group_btn.style.marginTop = '10px'
+    // input 输入旋转的角度
+    var option_span_label_input = document.createElement('span');
+    option_span_label_input.innerHTML = '旋转角度：';
+    option_group_btn.appendChild(option_span_label_input)
+    var option_input_val = document.createElement('input');
+    option_input_val.id = 'option_input_val';
+    // 设置好看样式
+    option_input_val.style.width = '50px';
+    option_input_val.style.height = '30px';
+    option_input_val.style.border = '1px solid #ccc';
+    option_input_val.style.borderRadius = '5px';
+    option_input_val.style.outline = 'none';
+    option_input_val.value = '10';
+    option_input_val.style.backgroundColor = '#f9f9f9';
+    option_input_val.style.boxShadow = 'none';
+    option_input_val.style.padding = '0px 5px';
+    option_group_btn.appendChild(option_input_val)
+
     // 旋转按钮
     var rotate_left_btn = create_button_def({title: '左旋转'});
+    rotate_left_btn.style.marginLeft = '10px'
     option_group_btn.appendChild(rotate_left_btn)
     var rotate_right_btn = create_button_def({title: '右旋转'});
     rotate_right_btn.style.marginLeft = '10px'
@@ -167,10 +191,12 @@ function show_dialog(base64, option, callback) {
     option_group_btn.appendChild(reset_btn)
 
     // 确认按钮
-    var confirm_btn = create_button_def({title: '确定'})
-
+    var confirm_btn = create_button_def({title:_option.confirm_text || '确定'})
+    var cancel_btn = create_button_def({title: _option.cancel_text || '取消', backgroundColor: '#cccccc', color: '#333333'})
+    cancel_btn.style.marginLeft = '10px'
     // 组装元素
     btn_group.appendChild(confirm_btn);
+    btn_group.appendChild(cancel_btn);
     dialog.appendChild(title_el);
     dialog.appendChild(div_group);
     dialog.appendChild(option_group_btn);
@@ -183,6 +209,9 @@ function show_dialog(base64, option, callback) {
         e = e || window.event;
         if (e.keyCode === 27) {
             document.body.removeChild(overlay);
+            if (typeof _option.cancel_fn === 'function') {
+                _option.cancel_fn();
+            }
         }
     };
     overlay.tabIndex = 0; // 使div可聚焦
@@ -193,47 +222,34 @@ function show_dialog(base64, option, callback) {
     setTimeout(function () {
         // 初始化裁剪
         var _def_option = {
-            aspectRatio: 2.8 / 3.5,
+            // aspectRatio: 2.8 / 3.5,
             preview: '.preview_img',
         }
-        option = merge(_def_option, option)
-        var crop_obj = on_crop_img('crop_img', option)
+        c_option = merge(_def_option, c_option)
+        var crop_obj = on_crop_img('crop_img', c_option)
+        // 确认按钮
         confirm_btn.onclick = function () {
             document.body.removeChild(overlay);
-            if (typeof callback === 'function') {
-                callback(crop_obj);
+            if (typeof _option.confirm_fn === 'function') {
+                _option.confirm_fn(crop_obj);
+            }
+        };
+        // 取消按钮
+        cancel_btn.onclick = function () {
+            document.body.removeChild(overlay);
+            if (typeof _option.cancel_fn === 'function') {
+                _option.cancel_fn();
             }
         };
 
         rotate_left_btn.onclick = function () {
-            crop_obj.rotate(1);
-        }
-        var mousedown_left = null
-        rotate_left_btn.onmousedown = function () {
-            mousedown_left = setInterval(() => {
-                crop_obj.rotate(1)
-            }, 50)
-            console.log('onmousedown')
-        }
-        rotate_left_btn.onmouseup = function () {
-            console.log('onmouseup')
-            clearInterval(mousedown_left)
+            crop_obj.rotate(-1 * option_input_val.value);
         }
 
         rotate_right_btn.onclick = function () {
-            crop_obj.rotate(-1);
+            crop_obj.rotate(1 * option_input_val.value);
         }
-        var mousedown_right = null
-        rotate_right_btn.onmousedown = function () {
-            mousedown_right = setInterval(() => {
-                crop_obj.rotate(-1)
-            }, 50)
-            console.log('onmousedown')
-        }
-        rotate_right_btn.onmouseup = function () {
-            console.log('onmouseup')
-            clearInterval(mousedown_right)
-        }
+
         reset_btn.onclick = function () {
             crop_obj.reset();
         }
@@ -247,4 +263,5 @@ window.cropper_show_dialog = show_dialog
 window.cropper_crop_img = on_crop_img
 // 最低ie 10+
 window.file_to_base64 = file_to_base64
+// 创建文件对象 ie 不支持
 window.base64_to_file = base64_to_file
